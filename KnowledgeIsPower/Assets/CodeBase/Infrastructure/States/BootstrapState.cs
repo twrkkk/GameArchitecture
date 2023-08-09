@@ -2,6 +2,9 @@ using UnityEngine;
 using CodeBase.Services.Input;
 using Assets.CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Factory;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using Assets.CodeBase.Infrastructure.States;
+using Assets.CodeBase.Infrastructure.Services.SaveLoad;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -28,7 +31,7 @@ namespace CodeBase.Infrastructure.States
 
         private void EnterLoadLevel()
         {
-            _stateMachine.Enter<LoadLevelState, string>("Main");
+            _stateMachine.Enter<LoadProgressState>();
         }
 
         public void Exit()
@@ -39,7 +42,9 @@ namespace CodeBase.Infrastructure.States
         {
             _services.RegisterSingle<IInputService>(ChooseInputService());
             _services.RegisterSingle<IAssetProvider>(new AssetProvider());
-            _services.RegisterSingle<IGameFactory>(new GameFactory(AllServices.Container.Single<IAssetProvider>()));
+            _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
+            _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssetProvider>()));
+            _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
         }
 
         private static IInputService ChooseInputService()
