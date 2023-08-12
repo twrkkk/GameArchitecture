@@ -1,4 +1,5 @@
-﻿using Assets.CodeBase.Infrastructure.Services;
+﻿using Assets.CodeBase.Hero;
+using Assets.CodeBase.Infrastructure.Services;
 using CodeBase.Enemy;
 using CodeBase.Infrastructure.Factory;
 using System;
@@ -13,6 +14,7 @@ namespace Assets.CodeBase.Enemy
         public float AttackCooldown = 3f;
         public float EffectiveDistance = 0.5f;
         public float Cleavage = 0.5f;
+        public float Damage = 10f;
 
         private IGameFactory _gameFactory;
         private Transform _hero;
@@ -44,11 +46,12 @@ namespace Assets.CodeBase.Enemy
         private bool CanAttack() =>
             _attackEnded && _attackIsActive;
 
-        public void OnAttack()
+        public void OnAttack() // calls into enemy attack animation
         {
             if (Hit(out Collider hit))
             {
                 PhysicsDebug.DrawDebug(HitPointPosition(), Cleavage, 1f);
+                hit.gameObject.GetComponent<IHealth>().TakeDamage(Damage);
             }
         }
 

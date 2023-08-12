@@ -1,4 +1,7 @@
-﻿using Assets.CodeBase.Infrastructure.States;
+﻿using Assets.CodeBase.Enemy;
+using Assets.CodeBase.Hero;
+using Assets.CodeBase.Hud;
+using Assets.CodeBase.Infrastructure.States;
 using CodeBase.CameraLogic;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services.PersistentProgress;
@@ -56,8 +59,17 @@ namespace CodeBase.Infrastructure.States
         {
             Transform InitialPoint = GameObject.FindWithTag(InitialPointTag).transform;
             GameObject hero = _gameFactory.CreateHero(InitialPoint);
-            _gameFactory.CreateHud();
+            InitHud(hero);
             CameraFollow(hero);
+        }
+
+        private void InitHud(GameObject hero)
+        {
+            GameObject hud = _gameFactory.CreateHud();
+
+            ActorUI actorUI = hud.GetComponentInChildren<ActorUI>();
+            HeroHealth health = hero.GetComponent<HeroHealth>();
+            actorUI.Construct(health);
         }
 
         private void CameraFollow(GameObject target) => Camera.main

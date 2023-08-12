@@ -1,3 +1,5 @@
+using Assets.CodeBase.Hero;
+using Assets.CodeBase.Hud;
 using Assets.CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PersistentProgress;
 using System;
@@ -32,7 +34,9 @@ namespace CodeBase.Infrastructure.Factory
         }
         public GameObject CreateHud()
         {
-            return InstantiateAndRegister(AssetPath.HudPath);
+            GameObject hud = InstantiateAndRegister(AssetPath.HudPath);
+
+            return hud;
         }
 
         public void CleanUp()
@@ -43,16 +47,16 @@ namespace CodeBase.Infrastructure.Factory
 
         private GameObject InstantiateAndRegister(string prefabPath, Transform initialPoint)
         {
-            GameObject hero = _assets.Instantiate(prefabPath, initialPoint.position);
-            RegisterProgressWatchers(hero);
-            return hero;
+            GameObject prefab = _assets.Instantiate(prefabPath, initialPoint.position);
+            RegisterProgressWatchers(prefab);
+            return prefab;
         }
 
         private GameObject InstantiateAndRegister(string prefabPath)
         {
-            GameObject hero = _assets.Instantiate(prefabPath);
-            RegisterProgressWatchers(hero);
-            return hero;
+            GameObject prefab = _assets.Instantiate(prefabPath);
+            RegisterProgressWatchers(prefab);
+            return prefab;
         }
 
         private void RegisterProgressWatchers(GameObject hero)

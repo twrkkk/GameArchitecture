@@ -39,7 +39,14 @@ namespace Assets.CodeBase.Infrastructure.States
 
         private PlayerProgress NewProgress()
         {
-            return new PlayerProgress("Main");
+            PlayerProgress progress = new PlayerProgress("Main");
+
+            progress.HeroState.MaxHp = 100f;
+            progress.HeroStats.Damage = 10f;
+            progress.HeroStats.DamageRadius = .5f;
+            progress.HeroState.ResetHP();
+
+            return progress;
         }
     }
 }
