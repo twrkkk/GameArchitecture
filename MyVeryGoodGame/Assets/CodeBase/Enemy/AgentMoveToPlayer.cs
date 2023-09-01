@@ -11,26 +11,10 @@ namespace Assets.CodeBase.Enemy
     {
         public NavMeshAgent Agent;
         private Transform _target;
-        private IGameFactory _gameFactory;
 
-        private void Start()
+        public void Construct(Transform target)
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-
-            if (_gameFactory.HeroGameObject != null)
-                InitializeHeroTransform();
-            else
-                _gameFactory.heroCreated += HeroCreated;
-        }
-
-        private void InitializeHeroTransform()
-        {
-            _target = _gameFactory.HeroGameObject.transform;
-        }
-
-        private void HeroCreated()
-        {
-            InitializeHeroTransform();
+            _target = target;
         }
 
         private void Update()

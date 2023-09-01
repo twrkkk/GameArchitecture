@@ -11,28 +11,14 @@ namespace Assets.CodeBase.Enemy
     {
         public float Speed;
         private Transform _target;
-        private IGameFactory _gameFactory;
-
-        private void Start()
+        public void Construct(Transform target)
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-
-            if (HeroExists())
-            {
-                InitHeroTarget();
-            }
-            else
-            {
-                _gameFactory.heroCreated += InitHeroTarget;
-            }
+            _target = target;
         }
 
         private void Update()
         {
-            if (Initialized())
-            {
-                RotateToTarget();
-            }
+            RotateToTarget();
         }
 
         private void RotateToTarget()
@@ -47,20 +33,7 @@ namespace Assets.CodeBase.Enemy
         private Quaternion SmoothRotation(Quaternion targetRotation) =>
             Quaternion.Lerp(transform.rotation, targetRotation, SpeedFactor());
 
-        private bool Initialized() =>
-            _target != null;
-
         private float SpeedFactor() =>
             Speed * Time.deltaTime;
-
-        private bool HeroExists()
-        {
-            return _gameFactory.HeroGameObject != null;
-        }
-
-        private void InitHeroTarget()
-        {
-            _target = _gameFactory.HeroGameObject.transform;
-        }
     }
 }

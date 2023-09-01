@@ -23,15 +23,13 @@ namespace Assets.CodeBase.Enemy
         private Collider[] _hits = new Collider[1];
         private int _layerMask;
         private bool _attackIsActive;
+        public void Construct(Transform target)
+        {
+            _hero = target;
+        }
 
         private void Start()
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-            if (_gameFactory.HeroGameObject != null)
-                InitHeroTransform();
-            else
-                _gameFactory.heroCreated += InitHeroTransform;
-
             _layerMask = 1 << LayerMask.NameToLayer("Player");
         }
 
@@ -85,11 +83,6 @@ namespace Assets.CodeBase.Enemy
             transform.LookAt(_hero.transform);
             Animator.PlayAttack();
             _attackEnded = false;
-        }
-
-        private void InitHeroTransform()
-        {
-            _hero = _gameFactory.HeroGameObject.transform;
         }
 
         public void EnableAttack()
